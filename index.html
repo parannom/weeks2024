@@ -45,6 +45,11 @@
             visibility: visible;
         }
 
+        
+        #overlayMessage {
+            text-align: center; /* 메시지 가운데 정렬 */
+        }
+
         #restartButton {
             margin-top: 20px;
             padding: 10px 20px;
@@ -180,6 +185,11 @@
         let startTime;
         let elapsedTime = 0; 
 
+        
+        // 화염 발사 쿨타임 변수 추가
+        let lastFireTime = 0;
+        const FIRE_COOLDOWN = 200; // 밀리초 단위
+
         // 초기 게임 상태 설정
         function initializeGame() {
             boss = {
@@ -243,6 +253,8 @@
             // 타이머 초기화
             startTime = Date.now();
             elapsedTime = 0;
+            // 화염 발사 쿨타임 초기화
+            lastFireTime = 0;
         }
 
         // 타일 그리기 (상단과 하단에 단일 행)
@@ -556,7 +568,11 @@
             }
             if (e.key === ' ') {
                 e.preventDefault(); // 스페이스바의 기본 동작(스크롤 방지)
-                fireFlame();
+                const currentTime = Date.now();
+                if (currentTime - lastFireTime > FIRE_COOLDOWN) {
+                    fireFlame();
+                    lastFireTime = currentTime;
+                }
             }
         });
 
