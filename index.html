@@ -87,7 +87,8 @@
             npc2: 'npc2.png',
             npc3: 'npc3.png',
             arrow: 'arrow.png',
-            sword: 'sword.png'
+            sword: 'sword.png',
+            nhn: 'nhn.png' // 추가된 라인
         };
 
         let imagesLoaded = 0;
@@ -198,8 +199,8 @@
                     y: 700,
                     width: 50,
                     height: 50,
-                    speed: 2,
-                    cooldown: 100,
+                    speed: 3,
+                    cooldown: 50,
                     health: 100
                 },
                 {
@@ -209,8 +210,8 @@
                     y: 700,
                     width: 50,
                     height: 50,
-                    speed: 2,
-                    cooldown: 100,
+                    speed: 3,
+                    cooldown: 50,
                     health: 100
                 },
                 {
@@ -220,8 +221,8 @@
                     y: 700,
                     width: 50,
                     height: 50,
-                    speed: 2,
-                    cooldown: 100,
+                    speed: 3,
+                    cooldown: 50,
                     health: 100
                 }
             ];
@@ -277,6 +278,16 @@
                     ctx.drawImage(images.sword, proj.x, proj.y, proj.width, proj.height);
                 }
             });
+        }
+
+        // 하단 중앙에 nhn 이미지 그리기
+        function drawNhn() {
+            const nhnImage = images.nhn;
+            if (nhnImage) {
+                const x = (canvas.width - nhnImage.width) / 2;
+                const y = canvas.height - nhnImage.height - 50; // 50px 위에 위치 (필요에 따라 조정)
+                ctx.drawImage(nhnImage, x, y, nhnImage.width, nhnImage.height);
+            }
         }
 
         // 상태 표시 (보스 체력, 처치한 NPC 수)
@@ -401,7 +412,7 @@
                         });
                     }
                     // 쿨타임 리셋
-                    npc.cooldown = 100; // 필요에 따라 조정 가능
+                    npc.cooldown = 50; // 필요에 따라 조정 가능
                 }
             });
         }
@@ -552,7 +563,8 @@
 
             // 캔버스 초기화
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+            // 배경 이미지 그리기
+            drawNhn();
             // 요소 그리기
             drawTile();
             drawBoss();
@@ -587,67 +599,6 @@
             // 게임 루프 다시 시작
             gameLoop();
         });
-
-        // 게임 초기화 및 시작 함수
-        function initializeGame() {
-            boss = {
-                x: 250, // 가로 중앙 300px 영역 내에서 시작 (600 - 300) / 2 = 150
-                y: 50,
-                width: 100,
-                height: 100,
-                speed: 2,
-                movingLeft: false,
-                movingRight: false,
-                health: 290, // 보스 체력
-                isJumping: false, // 점프 상태
-                jumpVelocity: 0, // 점프 속도
-                gravity: 0.5, // 중력
-                groundY: 50 // 점프 후 돌아올 y 위치
-            };
-
-            npcs = [
-                {
-                    id: 'npc1',
-                    type: 'npc1',
-                    x: 100,
-                    y: 700,
-                    width: 50,
-                    height: 50,
-                    speed: 2,
-                    cooldown: 100,
-                    health: 100
-                },
-                {
-                    id: 'npc2',
-                    type: 'npc2',
-                    x: 275,
-                    y: 700,
-                    width: 50,
-                    height: 50,
-                    speed: 2,
-                    cooldown: 100,
-                    health: 100
-                },
-                {
-                    id: 'npc3',
-                    type: 'npc3',
-                    x: 450,
-                    y: 700,
-                    width: 50,
-                    height: 50,
-                    speed: 2,
-                    cooldown: 100,
-                    health: 100
-                }
-            ];
-
-            projectiles = []; // 화염 및 기타 발사체
-            gameOver = false;
-            victory = false;
-
-            // 오버레이 숨김
-            overlay.classList.remove('visible');
-        }
 
         // 게임 시작 시 초기화
         function startGame() {
